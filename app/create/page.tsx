@@ -1,17 +1,17 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CardConfig, encodeCardData } from "@/lib/card-data";
 import { templates, fonts } from "@/config/templates";
+import { suggestedMessages } from "@/config/messages";
 import { CardPreview } from "@/components/card-preview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select } from "@/components/ui/select"; // We'll need to adapt Select usage if it's the native one
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, Sparkles } from "lucide-react";
 
 export default function CreatePage() {
     const router = useRouter();
@@ -31,6 +31,11 @@ export default function CreatePage() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const handleSurpriseMe = () => {
+        const randomMsg = suggestedMessages[Math.floor(Math.random() * suggestedMessages.length)];
+        setFormData((prev) => ({ ...prev, message: randomMsg }));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsGenerating(true);
@@ -44,14 +49,24 @@ export default function CreatePage() {
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
-            {/* Editor Panel */}
-            <div className="w-full md:w-1/3 lg:w-1/4 bg-white p-6 border-r border-slate-200 overflow-y-auto h-screen sticky top-0 z-20 shadow-lg md:shadow-none">
+            {/* Preview Panel - Visible at top on mobile, right on desktop */}
+            <div className="w-full md:flex-1 bg-slate-100 p-4 md:p-8 flex items-center justify-center min-h-[40vh] md:min-h-screen md:h-screen sticky top-0 md:relative z-10 md:z-0 shadow-md md:shadow-none overflow-hidden order-1 md:order-2">
+                <div className="absolute inset-0 pattern-dots pattern-slate-200 pattern-bg-transparent pattern-size-4 pattern-opacity-20 pointer-events-none" /> {/* Abstract pattern */}
+
+                <div className="w-full max-w-[280px] md:max-w-md transform transition-all duration-500 scale-90 md:scale-100">
+                    <CardPreview data={formData} className="shadow-2xl ring-1 ring-slate-900/5 text-[0.8rem] md:text-base pointer-events-none md:pointer-events-auto" />
+                    {/* pointer-events-none on mobile preview to prevent scrolling issues if it overlays? No, actually we want to see it. */}
+                </div>
+            </div>
+
+            {/* Editor Panel - Scrollable below preview on mobile, fixed left on desktop */}
+            <div className="w-full md:w-1/3 lg:w-1/4 bg-white p-6 border-r border-slate-200 md:h-screen md:sticky md:top-0 z-20 shadow-lg md:shadow-none overflow-y-auto order-2 md:order-1">
                 <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                     Details
                     <span className="text-rose-500 text-sm font-normal bg-rose-50 px-2 py-1 rounded-full">Step 1</span>
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6 pb-20 md:pb-0">
                     <div className="space-y-2">
                         <Label htmlFor="to">To</Label>
                         <Input
@@ -79,7 +94,17 @@ export default function CreatePage() {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="message">Message</Label>
+                        <div className="flex justify-between items-center">
+                            <Label htmlFor="message">Message</Label>
+                            <button
+                                type="button"
+                                onClick={handleSurpriseMe}
+                                className="text-xs text-rose-500 hover:text-rose-600 flex items-center gap-1 transition-colors font-medium"
+                            >
+                                <Sparkles className="w-3 h-3" />
+                                Surprise Me
+                            </button>
+                        </div>
                         <Textarea
                             id="message"
                             name="message"
@@ -136,15 +161,6 @@ export default function CreatePage() {
                         )}
                     </Button>
                 </form>
-            </div>
-
-            {/* Preview Panel */}
-            <div className="flex-1 bg-slate-100 p-8 flex items-center justify-center min-h-[50vh] md:h-screen overflow-hidden relative">
-                <div className="absolute inset-0 pattern-dots pattern-slate-200 pattern-bg-transparent pattern-size-4 pattern-opacity-20" /> {/* Abstract pattern */}
-
-                <div className="w-full max-w-md transform transition-all duration-500 hover:scale-[1.02]">
-                    <CardPreview data={formData} className="shadow-2xl ring-1 ring-slate-900/5" />
-                </div>
             </div>
         </div>
     );
