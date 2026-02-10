@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-serif);
+  --font-cursive: var(--font-cursive);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  
+  --animate-spin-slow: spin 3s linear infinite;
+  
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
   }
+}
+
+:root {
+  --background: #fff1f2; /* rose-50 */
+  --foreground: #881337; /* rose-900 */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom Utilities for Patterns */
+.pattern-dots {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: calc(100% / var(--pattern-size, 10)) calc(100% / var(--pattern-size, 10));
+}
+
+.pattern-slate-200 {
+  color: #e2e8f0;
+}
+
+.pattern-size-4 {
+  --pattern-size: 20; 
+  background-size: 20px 20px;
+}
+
+.pattern-opacity-20 {
+    opacity: 0.2;
+}
+
+/* Simple Animation Utilities (simulating tailwindcss-animate) */
+.animate-in {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+    animation-name: animate-in-keyframes;
+}
+
+.fade-in {
+    --tw-enter-opacity: 0;
+}
+
+.zoom-in {
+    --tw-enter-scale: 0.95;
+}
+
+.slide-in-from-bottom-4 {
+    --tw-enter-translate-y: 1rem;
+}
+
+@keyframes animate-in-keyframes {
+    from {
+        opacity: var(--tw-enter-opacity, 1);
+        transform: scale(var(--tw-enter-scale, 1)) translateY(var(--tw-enter-translate-y, 0));
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
