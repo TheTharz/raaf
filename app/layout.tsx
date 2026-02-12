@@ -1,18 +1,22 @@
-
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Great_Vibes } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import { Footer } from "@/components/footer";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
-const greatVibes = Great_Vibes({ weight: "400", subsets: ["latin"], variable: "--font-cursive" });
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
-  title: "Valentine Card Generator",
-  description: "Create and share beautiful Valentine's Day cards instantly.",
-  icons: {
-    icon: "/favicon.ico",
-  },
+  title: "Raaf Romance - Valentine's Card Generator",
+  description: "Create personalized Valentine's cards",
 };
 
 export default function RootLayout({
@@ -22,10 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${playfair.variable} ${greatVibes.variable} font-sans antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <Footer />
       </body>
     </html>
   );
