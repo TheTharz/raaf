@@ -7,7 +7,6 @@ import { CardConfig, encodeCardData } from "@/lib/card-data";
 import { templates, fonts } from "@/config/templates";
 import { suggestedMessages } from "@/config/messages";
 import { CardPreview } from "@/components/card-preview";
-import { PrivacyNotice } from "@/components/privacy-notice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,15 +48,7 @@ export default function CreatePage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            {/* Privacy Notice Banner */}
-            <div className="bg-white border-b border-slate-200 py-4">
-                <div className="container mx-auto px-6">
-                    <PrivacyNotice />
-                </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row">
+        <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
             {/* Preview Panel - Visible at top on mobile, right on desktop */}
             <div className="w-full md:flex-1 bg-slate-100 p-4 md:p-8 flex items-center justify-center min-h-[40vh] md:min-h-screen md:h-screen sticky top-0 md:relative z-10 md:z-0 shadow-md md:shadow-none overflow-hidden order-1 md:order-2">
                 <div className="absolute inset-0 pattern-dots pattern-slate-200 pattern-bg-transparent pattern-size-4 pattern-opacity-20 pointer-events-none" /> {/* Abstract pattern */}
@@ -170,7 +161,6 @@ export default function CreatePage() {
                         )}
                     </Button>
                 </form>
-            </div>
             </div>
         </div>
     );
